@@ -1,43 +1,36 @@
 export class Particle {
-  constructor(strategy, startX, startY) {
-    this.strategy = strategy;
+  constructor(canvasContext, behaviour, startX, startY) {
+    this.ctx = canvasContext;
+    this.behaviour = new behaviour(this.ctx, this);
     this.isAlive = true;
-    this.progress = 0;
     
     // Visual properties
     this.x = startX;
     this.y = startY;
     this.opacity = 1;
     this.size = 1;
-    
-    // Initialize any strategy-specific properties on this particle
-    this.strategy.initializeStrategyProperties(this);
   }
   
   /**
-   * Set the strategy / behaviour for this particle
-   * @param strategy
+   * Set the behaviour for this particle
+   * @param behaviour
    */
-  setParticleStrategy(strategy) {
-    this.strategy = strategy;
-    
-    // Initialize any strategy-specific properties on this particle
-    this.strategy.initializeStrategyProperties(this);
+  setParticleBehaviour(behaviour) {
+    this.behaviour = new behaviour(this.ctx, this);
   }
   
   /**
-   * Update the properties of this particle by running the update function of the active behaviour strategy
+   * Update the properties of this particle by running the update function of the active behaviour
    */
   update() {
-    this.strategy.update(this);
-    this.progress++;
-    this.isAlive = this.strategy.isParticleAlive(this);
+    this.behaviour.update(this);
+    this.isAlive = this.behaviour.isParticleAlive(this);
   }
   
   /**
-   * Draw this particle, by running the draw-function of the active behaviour strategy
+   * Draw this particle, by running the draw-function of the active behaviour
    */
   draw() {
-    this.strategy.draw(this);
+    this.behaviour.draw(this);
   }
 }

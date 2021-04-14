@@ -1,25 +1,28 @@
 import { Particle } from './Particle.js';
 
-import { MicroOrganismStrategy } from './strategies/MicroOrganismStrategy.js'
+import { MicroOrganismBehaviour } from './particle_behaviours/MicroOrganismBehaviour.js'
+import { WaveBehaviour } from './particle_behaviours/WaveBehaviour.js'
+import { debounce } from './utils.js';
 
 export class ParticleManager {
   canvas = null;
   ctx = null;
-  maxAmountOfParticles = 1000;
   
   constructor(containerElementId) {
     // Find containerElement
     this.containerEl = document.getElementById(containerElementId);
     if (!this.containerEl) return;
+  
+    // React to resize-events
+    this.resizeHandlerDebounced = debounce(this.onResize.bind(this), 300);
+    window.onresize = this.resizeHandlerDebounced;
     
     // Setup our canvas
     this.initCanvas();
     
-    // Initialise our strategies (effects)
-    this.microOrganismStrategy = new MicroOrganismStrategy(this.ctx);
-    
-    // Decide what our initial selected strategy is
-    this.selectedStrategy = this.microOrganismStrategy;
+    // Decide what our initial particle behaviour is
+    // this.selectedParticleBehaviour = MicroOrganismBehaviour;
+    this.selectedParticleBehaviour = WaveBehaviour;
     
     // Create a list to store out particles in
     this.particles = [];
@@ -31,6 +34,15 @@ export class ParticleManager {
     this.canvas.height = this.containerEl.getBoundingClientRect().height;
     this.containerEl.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
+  }
+  
+  /**
+   * Re-init all particles and scale the canvas if the window resized
+   */
+  onResize() {
+    this.particles = [];
+    this.canvas.width = this.containerEl.getBoundingClientRect().width;
+    this.canvas.height = this.containerEl.getBoundingClientRect().height;
   }
   
   /**
@@ -47,7 +59,8 @@ export class ParticleManager {
       setTimeout(() => {
         this.particles.push(
           new Particle(
-            this.selectedStrategy,
+            this.ctx,
+            this.selectedParticleBehaviour,
             initialParticlePos.x,
             initialParticlePos.y
           )
@@ -58,15 +71,12 @@ export class ParticleManager {
   }
   
   clearCanvas() {
-    this.ctx.globalAlpha = 0.05;
-    this.ctx.fillStyle = '#000E2E';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.globalAlpha = 1;
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
   
   update() {
     // Clear our canvas
-    this.clearCanvas();
+    this.selectedParticleBehaviour.clearCanvasStrategy(this.ctx);
     
     // Loop through particles, animate them and filter away any 'dead' particles
     this.particles = this.particles.filter((particle) => {
@@ -76,7 +86,7 @@ export class ParticleManager {
     });
     
     // If we have less particles than 'maxAmountOfParticles', create more particles
-    if (this.particles.length < this.initialisedParticleAmount) {
+    if (this.particles.length < this.selectedParticleBehaviour.maxAmountOfParticles) {
       this.createParticles(1)
     }
     
