@@ -1,5 +1,2 @@
-import { ParticleManager } from './ParticleManager.js';
-
-
-const particleManager = new ParticleManager('particles-container');
-particleManager.startParticles();
+import { ParticleSystem } from './ParticleSystem.js';
+const particleSystem = new ParticleSystem('particles-container');
