@@ -3,7 +3,7 @@ import { ImageParticle } from './ImageParticle.js';
 export class ImageParticleFactory {
   images = [];
   
-  constructor({ images }) {
+  constructor({ images, minScale, maxScale }) {
     // We have some fallback images for our particles, which we can use if no images have been passed into the constructor
     const fallbackImages = [
       {
@@ -37,11 +37,16 @@ export class ImageParticleFactory {
       };
       return image;
     });
+  
+    this.scaleRange = {
+      min: minScale || 0.1,
+      max: maxScale || 0.5
+    };
   }
   
   createParticle({canvasContext, initialX, initialY, behaviouralProperties}) {
     const particleImage = this.images[Math.floor(Math.random() * this.images.length)];
-    const scale = 0.5 * Math.random();
+    const scale = Math.random() * (this.scaleRange.max - this.scaleRange.min) + this.scaleRange.min;
     return new ImageParticle({
       canvasContext: canvasContext,
       behaviouralProperties: behaviouralProperties,

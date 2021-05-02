@@ -1,15 +1,17 @@
 import { MicroOrganismParticle } from './MicroOrganismParticle.js';
 
 export class MicroOrganismParticleFactory {
-  constructor() {
+  constructor({minRadius, maxRadius, particleColors}) {
+    this.particleColors = particleColors || ['#F9314C', '#d8002c', '#7DFFF2'];
+    this.sizeRange = {
+      min: minRadius || Math.random(),
+      max: maxRadius || Math.random() * 3
+    };
   }
   
   createParticle({canvasContext, initialX, initialY, behaviouralProperties}) {
-    const random = Math.random()
-    let radius = random > .2 ? Math.random() : Math.random() * 3;
-    let color = random > .2 ? "#d8002c" : "#F9314C";
-    radius = random > .8 ? Math.random() * 2 : radius;
-    color = random > .8 ? "#7DFFF2" : color;
+    let radius = Math.random() * (this.sizeRange.max - this.sizeRange.min) + this.sizeRange.min;
+    let color = this.particleColors[Math.floor(Math.random() * this.particleColors.length)];
     
     return new MicroOrganismParticle({
       canvasContext: canvasContext,

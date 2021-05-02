@@ -6,8 +6,8 @@ export class WaveEmitter {
   particles = [];
   maxAmountOfParticles = 200;
   
-  constructor() {
-  
+  constructor({minSpeed, maxSpeed}) {
+    this.speedRange = {min: (minSpeed || 1), max: (maxSpeed || 5)};
   }
   
   init({ canvasContext, particleFactory }) {
@@ -40,7 +40,7 @@ export class WaveEmitter {
           rotationDirection: Math.random() > 0.5 ? "-" : "+",
           rotation: 0,
           progress: 0,
-          speed: (1 + Math.random() * 5),
+          speed: Math.random() * (this.speedRange.max - this.speedRange.min) + this.speedRange.min,
         };
         this.particles.push(
           this.particleFactory.createParticle({

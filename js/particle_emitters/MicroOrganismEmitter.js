@@ -2,10 +2,10 @@ export class MicroOrganismEmitter {
   ctx = null;
   particleFactory = null;
   particles = [];
-  maxAmountOfParticles = 1000;
+  maxAmountOfParticles = 800;
   
-  constructor() {
-  
+  constructor({backgroundColor}) {
+    this.backgroundColor = backgroundColor || '#000E2E';
   }
   
   init({ canvasContext, particleFactory }) {
@@ -17,7 +17,7 @@ export class MicroOrganismEmitter {
   
   clearCanvas() {
     this.ctx.globalAlpha = 0.05;
-    this.ctx.fillStyle = '#000E2E';
+    this.ctx.fillStyle = this.backgroundColor;
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.globalAlpha = 1;
   }
