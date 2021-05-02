@@ -1,5 +1,3 @@
-import { MicroOrganismsEffectManager } from './effect_managers/MicroOrganismsEffectManager.js'
-import { WaveEffectManager } from './effect_managers/WaveEffectManager.js'
 import { debounce } from './utils.js';
 
 export class ParticleSystem {
@@ -7,49 +5,47 @@ export class ParticleSystem {
   ctx = null;
   paused = false;
   
-  constructor(containerElementId) {
+  constructor({containerElement, particleEmitter, particleFactory}) {
     // Find containerElement
-    this.containerEl = document.getElementById(containerElementId);
-    if (!this.containerEl) return;
+    if (!containerElement) return;
     
     // Setup our canvas
-    this.initCanvas();
+    this.ctx = this.initCanvas(containerElement);
     
-    // Decide what our initial particle behaviour is
-    // this.selectedParticleEffectManager = new MicroOrganismsEffectManager(this.ctx);
-    this.selectedParticleEffectManager = new WaveEffectManager(this.ctx);
+    // Register our particle emitter
+    this.particleEmitter = particleEmitter;
+    this.particleEmitter.init({canvasContext: this.ctx, particleFactory: particleFactory});
     this.update();
     
     // React to resize-events
-    this.resizeHandlerDebounced = debounce(this.onResize.bind(this), 500);
+    this.resizeHandlerDebounced = debounce(() => this.onResize(containerElement), 500);
     window.onresize = () => {
       this.paused = true;
       this.resizeHandlerDebounced();
     };
   }
   
-  initCanvas() {
-    this.canvas = document.createElement('canvas');
-    this.canvas.width = this.containerEl.getBoundingClientRect().width;
-    this.canvas.height = this.containerEl.getBoundingClientRect().height;
-    this.containerEl.appendChild(this.canvas);
-    this.ctx = this.canvas.getContext('2d');
+  initCanvas(containerElement) {
+    const canvas = document.createElement('canvas');
+    canvas.width = containerElement.getBoundingClientRect().width;
+    canvas.height = containerElement.getBoundingClientRect().height;
+    containerElement.appendChild(canvas);
+    return canvas.getContext('2d');
   }
   
   /**
    * Re-init all particles and scale the canvas if the window resized
    */
-  onResize() {
-    this.canvas.width = this.containerEl.getBoundingClientRect().width;
-    this.canvas.height = this.containerEl.getBoundingClientRect().height;
-    this.ctx = this.canvas.getContext('2d');
-    this.selectedParticleEffectManager.clearParticles();
+  onResize(containerElement) {
+    this.ctx.canvas.width = containerElement.getBoundingClientRect().width;
+    this.ctx.canvas.height = containerElement.getBoundingClientRect().height;
+    this.particleEmitter.clearParticles();
     this.paused = false;
   }
   
   update() {
     if (!this.paused) {
-      this.selectedParticleEffectManager.update();
+      this.particleEmitter.update();
     }
     
     // Keep updating our particles
