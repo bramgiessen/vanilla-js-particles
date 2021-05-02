@@ -6,8 +6,9 @@ export class WaveEmitter {
   particles = [];
   maxAmountOfParticles = 200;
   
-  constructor({minSpeed, maxSpeed}) {
+  constructor({backgroundColor, minSpeed, maxSpeed}) {
     this.speedRange = {min: (minSpeed || 1), max: (maxSpeed || 5)};
+    this.backgroundColor = backgroundColor || '#000'
   }
   
   init({ canvasContext, particleFactory }) {
@@ -18,7 +19,8 @@ export class WaveEmitter {
   }
   
   clearCanvas() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
   
   clearParticles() {

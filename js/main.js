@@ -10,6 +10,7 @@ const containerElement = document.getElementById('particles-container');
 const particleSystem = new ParticleSystem({
   containerElement: containerElement,
   particleEmitter: new WaveEmitter({
+    backgroundColor: '#FFF',
     minSpeed: 1,
     maxSpeed: 5
   }),
