@@ -1,6 +1,6 @@
-import { DancingDiamondParticle } from './DancingDiamondParticle.js';
+import { AnimatedDiamondParticle } from './AnimatedDiamondParticle.js';
 
-export class DancingGeometryParticleFactory {
+export class AnimatedGeometryParticleFactory {
   constructor({minWidth, maxWidth, shapes}) {
     this.particleColors = shapes || ['diamond'];
     this.sizeRange = {
@@ -12,7 +12,7 @@ export class DancingGeometryParticleFactory {
   createParticle({canvasContext, initialX, initialY, behaviouralProperties}) {
     let size = Math.random() * (this.sizeRange.max - this.sizeRange.min) + this.sizeRange.min;
     
-    return new DancingDiamondParticle({
+    return new AnimatedDiamondParticle({
       canvasContext: canvasContext,
       behaviouralProperties: behaviouralProperties,
       initialX: initialX,

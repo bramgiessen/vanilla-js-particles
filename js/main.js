@@ -3,7 +3,7 @@ import { WaveEmitter } from './particle_emitters/WaveEmitter.js';
 import { MicroOrganismEmitter } from './particle_emitters/MicroOrganismEmitter.js';
 import { ImageParticleFactory } from './particle_factories/image_particle_factory/ImageParticleFactory.js';
 import { MicroOrganismParticleFactory } from './particle_factories/micro_organism_particle_factory/MicroOrganismParticleFactory.js';
-import {DancingGeometryParticleFactory} from './particle_factories/dancing_geometry_particle_factory/DancingGeometryParticleFactory.js';
+import {AnimatedGeometryParticleFactory} from './particle_factories/animated_geometry_particle_factory/AnimatedGeometryParticleFactory.js';
 
 const containerElement = document.getElementById('particles-container');
 
@@ -28,7 +28,7 @@ const particleSystem = new ParticleSystem({
   //   maxRadius: 3,
   //   particleColors: ['#F9314C', '#d8002c', '#7DFFF2']
   // }),
-  particleFactory: new DancingGeometryParticleFactory({
+  particleFactory: new AnimatedGeometryParticleFactory({
     minWidth: 15,
     maxWidth: 25,
   }),

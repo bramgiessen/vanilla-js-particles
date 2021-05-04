@@ -1,7 +1,7 @@
 import { ParticleBase } from '../ParticleBase.js';
 import { rotatePolygonAroundPoint, sineBetween } from '../../utils.js';
 
-export class DancingDiamondParticle extends ParticleBase {
+export class AnimatedDiamondParticle extends ParticleBase {
   constructor({ canvasContext, behaviouralProperties, initialX, initialY, size }) {
     super();
     this.ctx = canvasContext;
