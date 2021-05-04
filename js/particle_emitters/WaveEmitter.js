@@ -1,12 +1,15 @@
+import {EmitterBase} from './EmitterBase.js';
+
 const radians = (degrees) => degrees * Math.PI / 180;
 
-export class WaveEmitter {
+export class WaveEmitter extends EmitterBase{
   ctx = null;
   particleFactory = null;
   particles = [];
   maxAmountOfParticles = 200;
   
   constructor({backgroundColor, minSpeed, maxSpeed}) {
+    super();
     this.speedRange = {min: (minSpeed || 1), max: (maxSpeed || 5)};
     this.backgroundColor = backgroundColor || '#000'
   }

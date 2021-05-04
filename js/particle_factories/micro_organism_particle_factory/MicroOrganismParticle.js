@@ -1,4 +1,4 @@
-import {ParticleBase} from '../../ParticleBase.js';
+import {ParticleBase} from '../ParticleBase.js';
 export class MicroOrganismParticle extends ParticleBase {
   constructor({ canvasContext, behaviouralProperties, initialX, initialY, radius, color}) {
     super();

@@ -1,10 +1,12 @@
-export class MicroOrganismEmitter {
+import {EmitterBase} from './EmitterBase.js';
+export class MicroOrganismEmitter extends EmitterBase{
   ctx = null;
   particleFactory = null;
   particles = [];
   maxAmountOfParticles = 800;
   
   constructor({backgroundColor}) {
+    super();
     this.backgroundColor = backgroundColor || '#000E2E';
   }
   
