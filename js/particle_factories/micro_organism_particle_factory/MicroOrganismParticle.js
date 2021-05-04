@@ -30,6 +30,10 @@ export class MicroOrganismParticle extends ParticleBase {
     this.y = y;
   }
   
+  getPosition() {
+    return {x: this.x, y: this.y};
+  }
+  
   draw() {
     this.ctx.beginPath();
     this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);

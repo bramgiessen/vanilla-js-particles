@@ -22,6 +22,10 @@ export class ParticleBase {
     // Override this method in the extended particle class
   }
   
+  getPosition() {
+    // Override this method in the extended particle class
+  }
+  
   setRotation(rotation) {
     // Override this method in the extended particle class
   }

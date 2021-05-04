@@ -38,23 +38,24 @@ export class WaveEmitter extends EmitterBase{
   createParticles(amountOfParticles) {
     for (let i = 1; i < amountOfParticles + 1; i++) {
       setTimeout(() => {
+        // Create a new particle
         const behaviouralProperties = {
           a: ([0.5, 1, 2, 0.3, 3][Math.floor(Math.random() * 4)]),
           steps: (this.ctx.canvas.width / 8),
           siner: 100 * Math.random(),
           rotationDirection: Math.random() > 0.5 ? "-" : "+",
           rotation: 0,
-          progress: 0,
           speed: Math.random() * (this.speedRange.max - this.speedRange.min) + this.speedRange.min,
         };
-        this.particles.push(
-          this.particleFactory.createParticle({
-            canvasContext: this.ctx,
-            behaviouralProperties,
-            initialX: 0,
-            initialY: 0
-          })
-        );
+        const particle =  this.particleFactory.createParticle({
+          canvasContext: this.ctx,
+          behaviouralProperties
+        });
+        particle.setPosition({ x: -particle.getWidth(), y: 0 });
+        particle.behaviouralProperties.progress = particle.getPosition().x;
+        
+        // Add particle to our particles list
+        this.particles.push(particle);
       }, i * 20)
     }
     return this.particles.length;
