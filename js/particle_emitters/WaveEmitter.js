@@ -6,7 +6,7 @@ export class WaveEmitter extends EmitterBase{
   ctx = null;
   particleFactory = null;
   particles = [];
-  maxAmountOfParticles = 200;
+  maxAmountOfParticles = 0;
   
   constructor({backgroundColor, minSpeed, maxSpeed}) {
     super();
@@ -14,11 +14,13 @@ export class WaveEmitter extends EmitterBase{
     this.backgroundColor = backgroundColor || '#000'
   }
   
-  init({ canvasContext, particleFactory }) {
+  init({ canvasContext, particleFactory, maxAmountOfParticles }) {
     // Store our canvas context
     this.ctx = canvasContext;
     // Store our particle factory
     this.particleFactory = particleFactory;
+    // Store how many particles we are allowed to render
+    this.maxAmountOfParticles = maxAmountOfParticles || 200;
   }
   
   clearCanvas() {
@@ -52,7 +54,7 @@ export class WaveEmitter extends EmitterBase{
           behaviouralProperties
         });
         particle.setPosition({ x: -particle.getWidth(), y: 0 });
-        particle.behaviouralProperties.progress = particle.getPosition().x;
+        particle.setLifeTime(particle.getPosition().x);
         
         // Add particle to our particles list
         this.particles.push(particle);
@@ -62,11 +64,11 @@ export class WaveEmitter extends EmitterBase{
   }
   
   updateParticle(particle) {
-    const x = particle.behaviouralProperties.progress;
+    const x = particle.getLifeTime();
     const y = this.ctx.canvas.height / 2 + particle.behaviouralProperties.siner + (particle.behaviouralProperties.a * Math.sin(
-      particle.behaviouralProperties.progress / particle.behaviouralProperties.steps)) * 60;
-    const rotation = particle.behaviouralProperties.rotationDirection + radians(particle.behaviouralProperties.progress);
-    particle.behaviouralProperties.progress = particle.behaviouralProperties.progress + particle.behaviouralProperties.speed;
+      particle.getLifeTime() / particle.behaviouralProperties.steps)) * 60;
+    const rotation = particle.behaviouralProperties.rotationDirection + radians(particle.getLifeTime());
+    particle.setLifeTime(particle.getLifeTime() + particle.behaviouralProperties.speed);
     particle.setPosition({ x, y });
     particle.setRotation(rotation);
   }

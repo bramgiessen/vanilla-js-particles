@@ -31,4 +31,16 @@ export const rotatePolygonAroundPoint = (coordsArray, point, rotation) => {
     const rotatedY = relativeX * s + relativeY * c;
     return {x: point.x + rotatedX, y: point.y + rotatedY}
   })
-}
+};
+
+/**
+ * Return a value that sines between a min and a max value, based on given arbitrary time value
+ * @param min
+ * @param max
+ * @param t
+ * @return {*}
+ */
+export const sineBetween = (min, max, t) => {
+  const halfRange = (max - min) / 2;
+  return min + halfRange + Math.sin(t) * halfRange;
+};

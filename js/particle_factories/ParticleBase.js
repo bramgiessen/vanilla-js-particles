@@ -10,6 +10,14 @@ export class ParticleBase {
     return false;
   }
   
+  setLifeTime(lifetime) {
+    // Override this method in the extended particle class
+  }
+  
+  getLifeTime() {
+    // Override this method in the extended particle class
+  }
+  
   getWidth() {
     // Override this method in the extended particle class
   }

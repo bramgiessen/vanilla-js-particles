@@ -10,6 +10,7 @@ export class ImageParticle extends ParticleBase {
     this.x = initialX || 0;
     this.y = initialY || 0;
     this.rotation = initialRotation || 0;
+    this.lifetime = 0;
   }
   
   isParticleAlive() {
@@ -17,6 +18,14 @@ export class ImageParticle extends ParticleBase {
     const isOutsideVerticalViewport = (this.y < -this.getHeight() || this.y > this.ctx.canvas.height + this.getHeight());
     
     return !(isOutsideHorizontalViewport || isOutsideVerticalViewport);
+  }
+  
+  setLifeTime(lifetime) {
+    this.lifetime = lifetime;
+  }
+  
+  getLifeTime() {
+    return this.lifetime;
   }
   
   getWidth() {

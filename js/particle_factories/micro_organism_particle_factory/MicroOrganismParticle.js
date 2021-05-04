@@ -8,6 +8,7 @@ export class MicroOrganismParticle extends ParticleBase {
     this.y = initialY || 0;
     this.radius = radius;
     this.color = color;
+    this.lifetime = 0;
   }
   
   isParticleAlive() {
@@ -15,6 +16,14 @@ export class MicroOrganismParticle extends ParticleBase {
     const isOutsideVerticalViewport = (this.y < 0 || this.y > this.ctx.canvas.height + this.getHeight());
     
     return !(isOutsideHorizontalViewport || isOutsideVerticalViewport);
+  }
+  
+  setLifeTime(lifetime) {
+    this.lifetime = lifetime;
+  }
+  
+  getLifeTime() {
+    return this.lifetime;
   }
   
   getWidth() {

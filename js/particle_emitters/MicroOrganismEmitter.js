@@ -3,18 +3,20 @@ export class MicroOrganismEmitter extends EmitterBase{
   ctx = null;
   particleFactory = null;
   particles = [];
-  maxAmountOfParticles = 800;
+  maxAmountOfParticles = 0;
   
   constructor({backgroundColor}) {
     super();
     this.backgroundColor = backgroundColor || '#000E2E';
   }
   
-  init({ canvasContext, particleFactory }) {
+  init({ canvasContext, particleFactory, maxAmountOfParticles }) {
     // Store our canvas context
     this.ctx = canvasContext;
     // Store our particle factory
     this.particleFactory = particleFactory;
+    // Store how many particles we are allowed to render
+    this.maxAmountOfParticles = maxAmountOfParticles || 800;
   }
   
   clearCanvas() {
@@ -39,7 +41,6 @@ export class MicroOrganismEmitter extends EmitterBase{
         const initialX = (this.ctx.canvas.width / 2) + (Math.random() * 200 - Math.random() * 200);
         const initialY = (this.ctx.canvas.height / 2) + (Math.random() * 200 - Math.random() * 200);
         const behaviouralProperties = {
-          progress: 0,
           variantx1: Math.random() * 300,
           variantx2: Math.random() * 400,
           varianty1: Math.random() * 100,
@@ -59,9 +60,9 @@ export class MicroOrganismEmitter extends EmitterBase{
   }
   
   updateParticle(particle) {
-    const x = particle.x + (Math.sin(particle.behaviouralProperties.progress / particle.behaviouralProperties.variantx1) * Math.cos(particle.behaviouralProperties.progress / particle.behaviouralProperties.variantx2));
-    const y = particle.y + (Math.cos(particle.behaviouralProperties.progress / particle.behaviouralProperties.varianty2));
-    particle.behaviouralProperties.progress++;
+    const x = particle.x + (Math.sin(particle.getLifeTime() / particle.behaviouralProperties.variantx1) * Math.cos(particle.getLifeTime() / particle.behaviouralProperties.variantx2));
+    const y = particle.y + (Math.cos(particle.getLifeTime() / particle.behaviouralProperties.varianty2));
+    particle.setLifeTime(particle.getLifeTime() + 1);
     particle.setPosition({ x, y });
   }
   

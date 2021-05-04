@@ -5,7 +5,7 @@ export class ParticleSystem {
   ctx = null;
   paused = false;
   
-  constructor({containerElement, particleEmitter, particleFactory}) {
+  constructor({containerElement, maxAmountOfParticles, particleEmitter, particleFactory}) {
     // Find containerElement
     if (!containerElement) return;
     
@@ -14,7 +14,7 @@ export class ParticleSystem {
     
     // Register our particle emitter
     this.particleEmitter = particleEmitter;
-    this.particleEmitter.init({canvasContext: this.ctx, particleFactory: particleFactory});
+    this.particleEmitter.init({canvasContext: this.ctx, particleFactory, maxAmountOfParticles});
     this.update();
     
     // React to resize-events
