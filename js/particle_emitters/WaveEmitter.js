@@ -1,17 +1,18 @@
-import {EmitterBase} from './EmitterBase.js';
+import { EmitterBase } from './EmitterBase.js';
 import { sineBetween } from '../utils.js';
 
 const radians = (degrees) => degrees * Math.PI / 180;
 
-export class WaveEmitter extends EmitterBase{
+export class WaveEmitter extends EmitterBase {
   ctx = null;
   particleFactory = null;
   particles = [];
   maxAmountOfParticles = 0;
+  isCreatingParticle = false;
   
-  constructor({backgroundColor, minSpeed, maxSpeed, alternateColors}) {
+  constructor({ backgroundColor, minSpeed, maxSpeed, alternateColors }) {
     super();
-    this.speedRange = {min: (minSpeed || 1), max: (maxSpeed || 5)};
+    this.speedRange = { min: (minSpeed || 1), max: (maxSpeed || 5) };
     this.backgroundColor = backgroundColor || '#000'
     this.alternateColors = alternateColors;
   }
@@ -35,33 +36,32 @@ export class WaveEmitter extends EmitterBase{
   }
   
   /**
-   * Create given amount of particles
-   * @param amountOfParticles
+   * Create a new particle
    * @return {number}
    */
-  createParticles(amountOfParticles) {
-    for (let i = 1; i < amountOfParticles + 1; i++) {
-      setTimeout(() => {
-        // Create a new particle
-        const behaviouralProperties = {
-          a: ([0.5, 1, 2, 0.3, 3][Math.floor(Math.random() * 4)]),
-          steps: (this.ctx.canvas.width / 8),
-          siner: 100 * Math.random(),
-          rotationDirection: Math.random() > 0.5 ? "-" : "+",
-          rotation: 0,
-          speed: Math.random() * (this.speedRange.max - this.speedRange.min) + this.speedRange.min,
-        };
-        const particle =  this.particleFactory.createParticle({
-          canvasContext: this.ctx,
-          behaviouralProperties
-        });
-        particle.setPosition({ x: -particle.getWidth(), y: 0 });
-        particle.setLifeTime(particle.getPosition().x);
-        
-        // Add particle to our particles list
-        this.particles.push(particle);
-      }, i * 20)
-    }
+  createParticle() {
+    this.isCreatingParticle = true;
+    setTimeout(() => {
+      // Create a new particle
+      const behaviouralProperties = {
+        a: ([0.5, 1, 2, 0.3, 3][Math.floor(Math.random() * 4)]),
+        steps: (this.ctx.canvas.width / 8),
+        siner: 100 * Math.random(),
+        rotationDirection: Math.random() > 0.5 ? "-" : "+",
+        rotation: 0,
+        speed: Math.random() * (this.speedRange.max - this.speedRange.min) + this.speedRange.min,
+      };
+      const particle = this.particleFactory.createParticle({
+        canvasContext: this.ctx,
+        behaviouralProperties
+      });
+      particle.setPosition({ x: -particle.getWidth(), y: 0 });
+      particle.setLifeTime(particle.getPosition().x);
+      
+      // Add particle to our particles list
+      this.particles.push(particle);
+      this.isCreatingParticle = false;
+    }, 20)
   }
   
   updateParticle(particle) {
@@ -91,8 +91,8 @@ export class WaveEmitter extends EmitterBase{
     });
     
     // If we have less particles than 'maxAmountOfParticles', create more particles
-    if (this.particles.length < this.maxAmountOfParticles) {
-      this.createParticles(1)
+    if (this.particles.length < this.maxAmountOfParticles && !this.isCreatingParticle) {
+      this.createParticle()
     }
   }
 }

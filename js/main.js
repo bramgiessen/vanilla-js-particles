@@ -17,10 +17,10 @@ const particleSystem = new ParticleSystem({
     maxSpeed: 5,
     alternateColors: true
   }),
-  // particleFactory: new ImageParticleFactory({
-  //   minScale: 0.1,
-  //   maxScale: 0.5,
-  // }),
+  particleFactory: new ImageParticleFactory({
+    minScale: 0.1,
+    maxScale: 0.5,
+  }),
   // particleEmitter: new MicroOrganismEmitter({
   //   backgroundColor: '#000E2E'
   // }),
@@ -29,8 +29,8 @@ const particleSystem = new ParticleSystem({
   //   maxRadius: 3,
   //   particleColors: ['#F9314C', '#d8002c', '#7DFFF2']
   // }),
-  particleFactory: new AnimatedGeometryParticleFactory({
-    minWidth: 15,
-    maxWidth: 25,
-  }),
+  // particleFactory: new AnimatedGeometryParticleFactory({
+  //   minWidth: 15,
+  //   maxWidth: 25,
+  // }),
 });

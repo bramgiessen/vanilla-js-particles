@@ -3,6 +3,7 @@ export class EmitterBase {
   particleFactory = null;
   particles = [];
   maxAmountOfParticles = 0;
+  isCreatingParticle = false;
   
   constructor() {
     // Override this method in the extended emitter class
@@ -21,11 +22,10 @@ export class EmitterBase {
   }
   
   /**
-   * Create given amount of particles
-   * @param amountOfParticles
+   * Create a new particle
    * @return {number}
    */
-  createParticles(amountOfParticles) {
+  createParticle() {
     // Override this method in the extended emitter class
   }
   
