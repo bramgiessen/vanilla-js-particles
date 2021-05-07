@@ -12,8 +12,8 @@ export class MicroOrganismParticle extends ParticleBase {
   }
   
   isParticleAlive() {
-    const isOutsideHorizontalViewport = (this.x < 0 || this.x > this.ctx.canvas.width + this.getWidth());
-    const isOutsideVerticalViewport = (this.y < 0 || this.y > this.ctx.canvas.height + this.getHeight());
+    const isOutsideHorizontalViewport = (this.x < -this.getWidth() || this.x > this.ctx.canvas.width + this.getWidth());
+    const isOutsideVerticalViewport = (this.y < -this.getHeight() || this.y > this.ctx.canvas.height + this.getHeight());
     
     return !(isOutsideHorizontalViewport || isOutsideVerticalViewport);
   }
@@ -41,6 +41,10 @@ export class MicroOrganismParticle extends ParticleBase {
   
   getPosition() {
     return {x: this.x, y: this.y};
+  }
+  
+  setColor(color) {
+    this.color = color;
   }
   
   draw() {

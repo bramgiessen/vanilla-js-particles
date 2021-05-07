@@ -1,4 +1,5 @@
 import {EmitterBase} from './EmitterBase.js';
+import { sineBetween } from '../utils.js';
 
 const radians = (degrees) => degrees * Math.PI / 180;
 
@@ -8,10 +9,11 @@ export class WaveEmitter extends EmitterBase{
   particles = [];
   maxAmountOfParticles = 0;
   
-  constructor({backgroundColor, minSpeed, maxSpeed}) {
+  constructor({backgroundColor, minSpeed, maxSpeed, alternateColors}) {
     super();
     this.speedRange = {min: (minSpeed || 1), max: (maxSpeed || 5)};
     this.backgroundColor = backgroundColor || '#000'
+    this.alternateColors = alternateColors;
   }
   
   init({ canvasContext, particleFactory, maxAmountOfParticles }) {
@@ -60,7 +62,6 @@ export class WaveEmitter extends EmitterBase{
         this.particles.push(particle);
       }, i * 20)
     }
-    return this.particles.length;
   }
   
   updateParticle(particle) {
@@ -71,6 +72,9 @@ export class WaveEmitter extends EmitterBase{
     particle.setLifeTime(particle.getLifeTime() + particle.behaviouralProperties.speed);
     particle.setPosition({ x, y });
     particle.setRotation(rotation);
+    if (this.alternateColors) {
+      particle.setColor(`hsla(${sineBetween(1, 100, particle.getLifeTime() / 100)},100%,50%,1)`);
+    }
   }
   
   update() {

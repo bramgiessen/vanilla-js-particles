@@ -38,6 +38,10 @@ export class ParticleBase {
     // Override this method in the extended particle class
   }
   
+  setColor(color) {
+    // Override this method in the extended particle class
+  }
+  
   draw() {
     // Override this method in the extended particle class
   }

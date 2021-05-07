@@ -14,7 +14,8 @@ const particleSystem = new ParticleSystem({
   particleEmitter: new WaveEmitter({
     backgroundColor: '#000',
     minSpeed: 1,
-    maxSpeed: 5
+    maxSpeed: 5,
+    alternateColors: true
   }),
   // particleFactory: new ImageParticleFactory({
   //   minScale: 0.1,
