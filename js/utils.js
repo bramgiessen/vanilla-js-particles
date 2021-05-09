@@ -44,3 +44,15 @@ export const sineBetween = (min, max, t) => {
   const halfRange = (max - min) / 2;
   return min + halfRange + Math.sin(t) * halfRange;
 };
+
+/**
+ * Calculate distance between 2 coordinates
+ * @param point1
+ * @param point2
+ * @return {number}
+ */
+export const calculateDistance = (point1, point2) => {
+  let x = Math.abs(point1.x - point2.x);
+  let y = Math.abs(point1.y - point2.y);
+  return Math.sqrt((x * x) + (y * y));
+};
