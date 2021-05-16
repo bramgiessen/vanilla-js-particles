@@ -35,7 +35,7 @@ export class MicroOrganismMagnetEmitter extends EmitterBase {
   }
   
   clearCanvas() {
-    this.ctx.globalAlpha = 0.05;
+    this.ctx.globalAlpha = 0.08;
     this.ctx.fillStyle = this.backgroundColor;
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.globalAlpha = 1;

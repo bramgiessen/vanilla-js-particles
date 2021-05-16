@@ -1,0 +1,53 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head title="Vanilla JS Particle effects - Micro organisms demo">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+<div id="particles-container"></div>
+<script type="text/javascript" src="../dist/particle_effects.js"></script>
+
+
+<script>
+  window.addEventListener('load', function () {
+    // Define a reference to the DOM element we want to render a canvas inside of
+    const containerElement = document.getElementById('particles-container');
+
+    // initialize our particle system
+    new particleEffects.ParticleSystem({
+      containerElement: containerElement,
+      maxAmountOfParticles: 300,
+      // particleEmitter: new WaveEmitter({
+      //   backgroundColor: '#000',
+      //   minSpeed: 1,
+      //   maxSpeed: 5,
+      //   alternateColors: true
+      // }),
+      // particleFactory: new ImageParticleFactory({
+      //   minScale: 0.1,
+      //   maxScale: 0.5,
+      // }),
+      // particleEmitter: new MicroOrganismEmitter({
+      //   backgroundColor: '#000E2E'
+      // }),
+      particleEmitter: new particleEffects.emitters.MicroOrganismMagnetEmitter({
+        backgroundColor: '#000E2E',
+        magnetRadius: 80
+      }),
+      particleFactory: new particleEffects.particleFactories.MicroOrganismParticleFactory({
+        minRadius: 0.2,
+        maxRadius: 3,
+        particleColors: ['#F9314C', '#d8002c', '#7DFFF2']
+      }),
+      // particleFactory: new AnimatedGeometryParticleFactory({
+      //   minWidth: 15,
+      //   maxWidth: 25,
+      // }),
+    });
+  })
+</script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "vanilla-js-particle-effects",
+  "version": "1.0.0",
+  "description": "A particle system that can be used to display different particle effects inside a DOM element",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": "npx webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bramgiessen/vanilla-js-particles.git"
+  },
+  "keywords": [
+    "particle",
+    "system",
+    "particles",
+    "js",
+    "javascript",
+    "effects",
+    "DOM"
+  ],
+  "author": "Bram van der Giessen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bramgiessen/vanilla-js-particles/issues"
+  },
+  "homepage": "https://github.com/bramgiessen/vanilla-js-particles#readme",
+  "devDependencies": {
+    "webpack": "5.37.0",
+    "webpack-cli": "4.7.0"
+  }
+}
