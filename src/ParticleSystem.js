@@ -7,6 +7,12 @@ export class ParticleSystem {
   constructor({ containerElement, maxAmountOfParticles, particleEmitter, particleFactory }) {
     // Find containerElement
     if (!containerElement) return;
+  
+    // Polyfill window.requestAnimationFrame if needed
+    const requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
+      window.setTimeout(callback, 1000 / 60);
+    };
+    window.requestAnimationFrame = requestAnimationFrame;
     
     // Store our initial container element size
     this.containerSize = {

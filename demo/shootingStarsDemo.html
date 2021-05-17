@@ -1,0 +1,36 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head title="Vanilla JS Particle effects - Micro-organism magnet demo">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+<div id="particles-container"></div>
+<!--<script type="text/javascript" src="../dist/particle_effects.js"></script>-->
+<script type="module" src="../src/index.js"></script>
+<script>
+  window.addEventListener('load', function () {
+    // Define a reference to the DOM element we want to render a canvas inside of
+    const containerElement = document.getElementById('particles-container');
+
+    // initialize our particle system
+    new particleEffects.ParticleSystem({
+      containerElement: containerElement,
+      maxAmountOfParticles: 200,
+      // Choose a particle emitter, which defines how our particles should behave
+      particleEmitter: new particleEffects.emitters.NightSkyEmitter({
+        backgroundColor: '#000a1d'
+      }),
+      // Choose a particle factory, which defines which type of particles we should create (and how to create them)
+      particleFactory: new particleEffects.particleFactories.SimpleStarParticleFactory({
+        minRadius: 0.1,
+        maxRadius: 0.2,
+        particleColors: ['#FFFFFF']
+      }),
+    });
+  })
+</script>
+</body>
+
+</html>
