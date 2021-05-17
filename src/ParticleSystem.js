@@ -3,32 +3,36 @@ import { debounce } from './utils.js';
 export class ParticleSystem {
   canvas = null;
   ctx = null;
-  paused = false;
   
-  constructor({containerElement, maxAmountOfParticles, particleEmitter, particleFactory}) {
+  constructor({ containerElement, maxAmountOfParticles, particleEmitter, particleFactory }) {
     // Find containerElement
     if (!containerElement) return;
+    
+    // Store our initial container element size
+    this.containerSize = {
+      width: containerElement.getBoundingClientRect().width,
+      height: containerElement.getBoundingClientRect().height
+    };
     
     // Setup our canvas
     this.ctx = this.initCanvas(containerElement);
     
     // Register our particle emitter
     this.particleEmitter = particleEmitter;
-    this.particleEmitter.init({canvasContext: this.ctx, particleFactory, maxAmountOfParticles});
+    this.particleEmitter.init({ canvasContext: this.ctx, particleFactory, maxAmountOfParticles });
     this.update();
     
     // React to resize-events
     this.resizeHandlerDebounced = debounce(() => this.onResize(containerElement), 500);
     window.onresize = () => {
-      this.paused = true;
       this.resizeHandlerDebounced();
     };
   }
   
   initCanvas(containerElement) {
     const canvas = document.createElement('canvas');
-    canvas.width = containerElement.getBoundingClientRect().width;
-    canvas.height = containerElement.getBoundingClientRect().height;
+    canvas.width = this.containerSize.width;
+    canvas.height = this.containerSize.height;
     containerElement.appendChild(canvas);
     return canvas.getContext('2d');
   }
@@ -37,16 +41,23 @@ export class ParticleSystem {
    * Re-init all particles and scale the canvas if the window resized
    */
   onResize(containerElement) {
-    this.ctx.canvas.width = containerElement.getBoundingClientRect().width;
-    this.ctx.canvas.height = containerElement.getBoundingClientRect().height;
-    this.particleEmitter.clearParticles();
-    this.paused = false;
+    const newContainerSize = {
+      width: containerElement.getBoundingClientRect().width,
+      height: containerElement.getBoundingClientRect().height
+    };
+    // Only reset our canvas if the container has actually resized more than a couple of pixels
+    const hasPassedResizeThreshold = (Math.abs(this.containerSize.width - newContainerSize.width) > 10)
+      || (Math.abs(this.containerSize.height - newContainerSize.height) > 10);
+    if (hasPassedResizeThreshold) {
+      this.containerSize = newContainerSize;
+      this.ctx.canvas.width = this.containerSize.width;
+      this.ctx.canvas.height = this.containerSize.height;
+      this.particleEmitter.clearParticles();
+    }
   }
   
   update() {
-    if (!this.paused) {
-      this.particleEmitter.update();
-    }
+    this.particleEmitter.update();
     
     // Keep updating our particles
     requestAnimationFrame(
