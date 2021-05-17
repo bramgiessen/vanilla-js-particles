@@ -50,7 +50,7 @@ export class StarParticle extends ParticleBase {
   draw() {
     this.ctx.beginPath();
     this.ctx.arc(this.x, this.y, this.getWidth(), 0, 2 * Math.PI);
-    this.ctx.lineWidth = 2;
+    this.ctx.lineWidth = this.getWidth();
     this.ctx.fillStyle = this.color;
     this.ctx.fill();
     this.ctx.closePath();

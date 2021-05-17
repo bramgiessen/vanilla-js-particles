@@ -10,7 +10,7 @@ export class NightSkyEmitter extends EmitterBase {
   
   constructor({ backgroundColor }) {
     super();
-    this.backgroundColor = backgroundColor || '#000E2E';
+    this.backgroundColor = backgroundColor;
   }
   
   init({ canvasContext, particleFactory, maxAmountOfParticles }) {
@@ -23,10 +23,12 @@ export class NightSkyEmitter extends EmitterBase {
   }
   
   clearCanvas() {
-    this.ctx.fillStyle = this.backgroundColor;
-    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.strokeStyle = '#ffffff';
+    if(this.backgroundColor){
+      this.ctx.fillStyle = this.backgroundColor;
+      this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    } else {
+      this.ctx.clearRect(0,0,this.ctx.canvas.width, this.ctx.canvas.height);
+    }
   }
   
   clearParticles() {
@@ -36,7 +38,7 @@ export class NightSkyEmitter extends EmitterBase {
   
   createShootingStarProperties() {
     return {
-      waitTime: new Date().getTime() + (Math.random() * 3000) + 500,
+      waitTime: new Date().getTime() + (Math.random() * 5000) + 500,
       active: false,
       length: (Math.random() * 80) + 10,
       speed: (Math.random() * 10) + 6
@@ -49,7 +51,7 @@ export class NightSkyEmitter extends EmitterBase {
    */
   createParticle() {
     let behaviouralProperties = {
-      speed: Math.random() * .15,
+      speed: Math.random() * .25,
       isShootingStar: this.amountOfShootingStars < this.maxAmountOfShootingStars,
     };
     if (behaviouralProperties.isShootingStar) {
@@ -68,6 +70,10 @@ export class NightSkyEmitter extends EmitterBase {
     );
   }
   
+  /**
+   * For shooting star particles, we need to update them a bit differently
+   * @param particle
+   */
   updateShootingStarParticle(particle) {
     let x = particle.getPosition().x;
     let y = particle.getPosition().y;
