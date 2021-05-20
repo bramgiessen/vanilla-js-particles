@@ -1,16 +1,25 @@
 import { EmitterBase } from './EmitterBase.js';
+import { biasedRandom, getBiasedRandom } from '../utils.js';
 
 export class NightSkyEmitter extends EmitterBase {
   ctx = null;
+  distributionStrategy = 'evenDistribution';
   particleFactory = null;
   particles = [];
   maxAmountOfParticles = 0;
   amountOfShootingStars = 0;
-  maxAmountOfShootingStars = 6;
+  maxAmountOfShootingStars = 2;
+  static distributionStrategiesEnum = {
+    // Evenly distribute stars over the canvas:
+    'evenDistribution': 'evenDistribution',
+    // Distribute stars from one point on the right side of the canvas:
+    'pointDistribution': 'pointDistribution',
+  };
   
-  constructor({ backgroundColor }) {
+  constructor({ backgroundColor, distributionStrategy }) {
     super();
     this.backgroundColor = backgroundColor;
+    this.distributionStrategy = distributionStrategy || 'evenDistribution';
   }
   
   init({ canvasContext, particleFactory, maxAmountOfParticles }) {
@@ -23,11 +32,11 @@ export class NightSkyEmitter extends EmitterBase {
   }
   
   clearCanvas() {
-    if(this.backgroundColor){
+    if (this.backgroundColor) {
       this.ctx.fillStyle = this.backgroundColor;
       this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     } else {
-      this.ctx.clearRect(0,0,this.ctx.canvas.width, this.ctx.canvas.height);
+      this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     }
   }
   
@@ -38,11 +47,31 @@ export class NightSkyEmitter extends EmitterBase {
   
   createShootingStarProperties() {
     return {
-      waitTime: new Date().getTime() + (Math.random() * 5000) + 500,
+      waitTime: new Date().getTime() + (Math.random() * 5000) + 1500,
       active: false,
       length: (Math.random() * 80) + 10,
       speed: (Math.random() * 10) + 6
     }
+  }
+  
+  getInitialStarPosition(isShootingStar) {
+    if (isShootingStar) {
+      return { x: (Math.random() * this.ctx.canvas.width * 2), y: 0 }
+    }
+    let x = 0;
+    let y = 0;
+    switch (this.distributionStrategy) {
+      case 'evenDistribution':
+      default:
+        x = Math.random() * this.ctx.canvas.width;
+        y = Math.random() * this.ctx.canvas.height;
+        break;
+      case 'pointDistribution':
+        x = getBiasedRandom(0, this.ctx.canvas.width, this.ctx.canvas.width, 0.8);
+        y = getBiasedRandom((this.ctx.canvas.height * 0.2), (this.ctx.canvas.height * 0.8), (this.ctx.canvas.height / 2), 1);
+        break;
+    }
+    return { x, y };
   }
   
   /**
@@ -58,14 +87,13 @@ export class NightSkyEmitter extends EmitterBase {
       this.amountOfShootingStars++;
       behaviouralProperties.shootingStarProperties = this.createShootingStarProperties();
     }
-    const initialX = behaviouralProperties.isShootingStar ? (Math.random() * this.ctx.canvas.width * 2) : Math.random() * this.ctx.canvas.width;
-    const initialY = behaviouralProperties.isShootingStar ? 0 : Math.random() * this.ctx.canvas.height;
+    const initialPosition = this.getInitialStarPosition(behaviouralProperties.isShootingStar);
     this.particles.push(
       this.particleFactory.createParticle({
         canvasContext: this.ctx,
         behaviouralProperties,
-        initialX,
-        initialY
+        initialX: initialPosition.x,
+        initialY: initialPosition.y
       })
     );
   }

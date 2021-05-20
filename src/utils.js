@@ -1,6 +1,6 @@
 export const debounce = (func, wait, immediate) => {
   let timeout;
-  return function() {
+  return function () {
     const context = this,
       args = arguments;
     const later = function () {
@@ -29,7 +29,7 @@ export const rotatePolygonAroundPoint = (coordsArray, point, rotation) => {
     const relativeY = coordinate.y - point.y;
     const rotatedX = relativeX * c - relativeY * s;
     const rotatedY = relativeX * s + relativeY * c;
-    return {x: point.x + rotatedX, y: point.y + rotatedY}
+    return { x: point.x + rotatedX, y: point.y + rotatedY }
   })
 };
 
@@ -55,4 +55,18 @@ export const calculateDistance = (point1, point2) => {
   let x = Math.abs(point1.x - point2.x);
   let y = Math.abs(point1.y - point2.y);
   return Math.sqrt((x * x) + (y * y));
+};
+
+/**
+ * Returns a random value in between a range, with a bias towards a given value with an influence between 0 and 1
+ * @param min
+ * @param max
+ * @param bias
+ * @param influence
+ * @return {number}
+ */
+export const getBiasedRandom = (min, max, bias, influence) => {
+  const rnd = Math.random() * (max - min) + min;   // random in range
+  const mix = Math.random() * influence;           // random mixer
+  return rnd * (1 - mix) + bias * mix;           // mix full range and bias
 };

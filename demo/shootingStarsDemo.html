@@ -19,7 +19,9 @@
       containerElement: containerElement,
       maxAmountOfParticles: 200,
       // Choose a particle emitter, which defines how our particles should behave
-      particleEmitter: new particleEffects.emitters.NightSkyEmitter({}),
+      particleEmitter: new particleEffects.emitters.NightSkyEmitter({
+        distributionStrategy: particleEffects.emitters.NightSkyEmitter.distributionStrategiesEnum.pointDistribution
+      }),
       // Choose a particle factory, which defines which type of particles we should create (and how to create them)
       particleFactory: new particleEffects.particleFactories.SimpleStarParticleFactory({
         minRadius: 0.1,
