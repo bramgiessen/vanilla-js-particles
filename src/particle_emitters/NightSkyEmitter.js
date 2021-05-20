@@ -1,5 +1,5 @@
 import { EmitterBase } from './EmitterBase.js';
-import { biasedRandom, getBiasedRandom } from '../utils.js';
+import { getBiasedRandom } from '../utils.js';
 
 export class NightSkyEmitter extends EmitterBase {
   ctx = null;

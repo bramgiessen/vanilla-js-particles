@@ -104,6 +104,42 @@
   scriptElement.src = '../wp-content/uploads/custom/particle_effects.js';
   document.head.appendChild(scriptElement);
 </script>
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  var scriptElement = document.createElement('script');
+  scriptElement.addEventListener('load', function () {
+    // Define a reference to the DOM element we want to render a canvas inside of
+    const containerElement = document.getElementById('homepage-header-wrapper');
+
+    // initialize our background particle system
+    new particleEffects.ParticleSystem({
+      containerElement: containerElement,
+      maxAmountOfParticles: 200,
+      // Choose a particle emitter, which defines how our particles should behave
+      particleEmitter: new particleEffects.emitters.NightSkyEmitter({
+        distributionStrategy: particleEffects.emitters.NightSkyEmitter.distributionStrategiesEnum.pointDistribution
+      }),
+      // Choose a particle factory, which defines which type of particles we should create (and how to create them)
+      particleFactory: new particleEffects.particleFactories.SimpleStarParticleFactory({
+        minRadius: 0.1,
+        maxRadius: 0.3,
+        particleColors: ['#FFFFFF']
+      }),
+    });
+  });
+
+  scriptElement.src = '../wp-content/uploads/custom/particle_effects.js';
+  document.head.appendChild(scriptElement);
+</script>
 </body>
 
 </html>

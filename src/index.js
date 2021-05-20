@@ -6,6 +6,7 @@ import { WaveEmitter } from './particle_emitters/WaveEmitter.js';
 import { MicroOrganismEmitter } from './particle_emitters/MicroOrganismEmitter.js';
 import { MicroOrganismMagnetEmitter } from './particle_emitters/MicroOrganismMagnetEmitter.js';
 import { NightSkyEmitter } from './particle_emitters/NightSkyEmitter.js';
+import { FromImageEmitter } from './particle_emitters/FromImageEmitter.js';
 
 // Import particle factories
 import { ImageParticleFactory } from './particle_factories/image_particle_factory/ImageParticleFactory.js';
@@ -22,7 +23,8 @@ window.particleEffects = {
     WaveEmitter,
     MicroOrganismEmitter,
     MicroOrganismMagnetEmitter,
-    NightSkyEmitter
+    NightSkyEmitter,
+    FromImageEmitter
   },
   
   // Define particle factories
